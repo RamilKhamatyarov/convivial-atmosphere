@@ -1,10 +1,10 @@
 package ru.rkhamatyarov.convivialatmosphere.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.rkhamatyarov.convivialatmosphere.domain.BeadMultiplication;
 
-import java.math.BigInteger;
-
+@Service
 public class BeadMultiplicationServiceImpl implements BeadMultiplicationService {
 
     private RandomBeadGeneratorService randomBeadGeneratorService;
@@ -16,8 +16,8 @@ public class BeadMultiplicationServiceImpl implements BeadMultiplicationService 
 
     @Override
     public BeadMultiplication createRandomBeadMultiplication() {
-        BigInteger leftBead = randomBeadGeneratorService.generateRandomBeadFactor();
-        BigInteger rightBead = randomBeadGeneratorService.generateRandomBeadFactor();
+        Integer leftBead = randomBeadGeneratorService.generateRandomBeadFactor();
+        Integer rightBead = randomBeadGeneratorService.generateRandomBeadFactor();
 
         return new BeadMultiplication(leftBead, rightBead);
     }

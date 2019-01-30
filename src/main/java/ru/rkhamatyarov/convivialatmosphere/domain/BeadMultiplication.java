@@ -1,28 +1,26 @@
 package ru.rkhamatyarov.convivialatmosphere.domain;
 
-import java.math.BigInteger;
-
 public class BeadMultiplication {
-    private BigInteger leftBeadFactor;
-    private BigInteger rightBeadFactor;
+    private Integer leftBeadFactor;
+    private Integer rightBeadFactor;
 
-    private BigInteger beadMultiplicationResult;
+    private Integer beadMultiplicationResult;
 
-    public BeadMultiplication(BigInteger leftBeadFactor, BigInteger rightBeadFactor) {
+    public BeadMultiplication(Integer leftBeadFactor, Integer rightBeadFactor) {
         this.leftBeadFactor = leftBeadFactor;
         this.rightBeadFactor = rightBeadFactor;
-        this.beadMultiplicationResult = leftBeadFactor.multiply(rightBeadFactor);
+        this.beadMultiplicationResult = leftBeadFactor * rightBeadFactor;
     }
 
-    public BigInteger getLeftBeadFactor() {
+    public Integer getLeftBeadFactor() {
         return leftBeadFactor;
     }
 
-    public BigInteger getRightBeadFactor() {
+    public Integer getRightBeadFactor() {
         return rightBeadFactor;
     }
 
-    public BigInteger getBeadMultiplicationResult() {
+    public Integer getBeadMultiplicationResult() {
         return beadMultiplicationResult;
     }
 

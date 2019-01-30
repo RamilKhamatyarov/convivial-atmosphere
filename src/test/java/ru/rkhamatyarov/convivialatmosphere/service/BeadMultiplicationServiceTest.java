@@ -8,8 +8,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.rkhamatyarov.convivialatmosphere.domain.BeadMultiplication;
 
-import java.math.BigInteger;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -25,8 +23,8 @@ public class BeadMultiplicationServiceTest {
 
     @Test
     public void createRandomBeadMultiplicationTest() {
-        BigInteger leftBead = new BigInteger(String.valueOf(13));
-        BigInteger rightBead = new BigInteger(String.valueOf(42));
+        Integer leftBead = 13;
+        Integer rightBead = 42;
 
         given(randomBeadGeneratiorService.generateRandomBeadFactor()).willReturn(leftBead, rightBead);
 
@@ -34,6 +32,6 @@ public class BeadMultiplicationServiceTest {
 
         assertThat(multiplication.getLeftBeadFactor()).isEqualTo(leftBead);
         assertThat(multiplication.getRightBeadFactor()).isEqualTo(rightBead);
-        assertThat(multiplication.getBeadMultiplicationResult()).isEqualTo(leftBead.multiply(rightBead));
+        assertThat(multiplication.getBeadMultiplicationResult()).isEqualTo(leftBead * rightBead);
     }
 }
