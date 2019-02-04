@@ -9,7 +9,7 @@ import ru.rkhamatyarov.convivialatmosphere.service.MultiplicationService;
 
 @RestController
 @RequestMapping("/multiplications")
-public class MultiplicationController {
+public final class MultiplicationController {
 
     private final MultiplicationService multiplicationService;
 
