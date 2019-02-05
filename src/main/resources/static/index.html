@@ -1,27 +1,55 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Multiplication v1</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="multiplication-client.js"></script>
-</head>
+    <head>
+        <title>Convivial atmosphere</title>
 
-<body>
-<div>
-    <h1>Multiplication 2 Integer</h1>
-    <h2>Check:</h2>
-    <h1>
-        <span class="leftMultiplier"></span> x <span class="rightMultiplier"></span> =
-    </h1>
-    <p>
-    <form id="attempt-form">
-        Result: <input type="text" name="multiplicationResult"><br>
-        Login: <input type="text" name="userLogin"><br>
-        <input type="submit" value="Check">
-    </form>
-    </p>
-    <h2><span class="result-message"></span></h2>
-</div>
-</body>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet"
+              type="text/css"
+              href="bootstrap.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="multiplication-client.js"></script>
+    </head>
+
+    <body>
+        <div class="p-3 mb-2 bg-info text-white">
+            <h1><a href="#" class="text-light bg-dark">Multiplication 2 Integer</a></h1>
+            <h2>Check:</h2>
+            <h1>
+                <span class="leftMultiplier"></span> x <span class="rightMultiplier"></span> =
+            </h1>
+            <p>
+                <form id="attempt-form">
+
+                    <table class="table table-hover table-dark">
+                        <tbody>
+                        <tr>
+                            <td>Result:</td>
+                            <td><input type="text" name="multiplicationResult"><br></td>
+                        </tr>
+
+                        <tr>
+                            <td>Login:</td>
+                            <td><input type="text" name="userLogin"><br></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <input class="btn btn-outline-light"
+                           type="submit"
+                           value="Check">
+
+                </form>
+            </p>
+            <h2>
+                <span class="result-message">
+                </span>
+            </h2>
+        </div>
+    </body>
 </html>
