@@ -22,9 +22,19 @@ final class MultiplicationCheckResultController {
     }
 
     @PostMapping
-    ResponseEntity<MultiplicationSuccessRs> postResult(@RequestBody MultiplicationResultTry resultTry) {
+    ResponseEntity<MultiplicationResultTry> postResult(@RequestBody MultiplicationResultTry resultTry) {
+        Boolean isRightResult = multiplicationService.checkTry(resultTry);
+
+        MultiplicationResultTry copyResultTry = new MultiplicationResultTry(
+                resultTry.getUser(),
+                resultTry.getMultiplication(),
+                resultTry.getMultiplicationResult(),
+                isRightResult
+        );
+
+
         return ResponseEntity.ok(
-                new MultiplicationSuccessRs(multiplicationService.checkTry(resultTry))
+                copyResultTry
         );
     }
 

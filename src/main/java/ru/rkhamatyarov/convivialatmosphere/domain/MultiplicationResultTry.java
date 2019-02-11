@@ -15,10 +15,13 @@ public class MultiplicationResultTry {
     private final Multiplication multiplication;
     private final Integer multiplicationResult;
 
+    private final boolean isRightResult;
+
     public MultiplicationResultTry() {
 
         user = null;
         multiplication = null;
         multiplicationResult = -1;
+        isRightResult = Boolean.FALSE;
     }
 }

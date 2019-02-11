@@ -38,11 +38,13 @@ $(document).ready(function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function(result){
-                if(result.isMultiplicationSuccess) {
+
+                if(result.rightResult) {
                     $('.result-message').empty().append("The result is correct, ").append(userLogin).append("!");
                 } else {
                     $('.result-message').empty().append("The result isn't correct, ").append(userLogin).append("!");
                 }
+
             }
         });
 

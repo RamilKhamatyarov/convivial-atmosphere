@@ -40,7 +40,7 @@ public class MultiplicationServiceTest {
     public void checkSuccessCorrectTryTest() {
         Multiplication multiplication = new Multiplication(13, 42);
         User user = new User("Jack");
-        MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 13*42);
+        MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 13*42, Boolean.FALSE);
 
         Boolean resultTry = beadMultiplicationService.checkTry(multiplicationResultTry);
         assertThat(resultTry).isTrue();
@@ -50,7 +50,7 @@ public class MultiplicationServiceTest {
     public void checkFailCorrectTryTest() {
         Multiplication multiplication = new Multiplication(13, 42);
         User user = new User("Jack");
-        MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 1342);
+        MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 1342, false);
 
         Boolean resultTry = beadMultiplicationService.checkTry(multiplicationResultTry);
         assertThat(resultTry).isFalse();

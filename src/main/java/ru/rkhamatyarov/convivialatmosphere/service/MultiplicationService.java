@@ -15,6 +15,6 @@ public interface MultiplicationService {
      * @param multiplicationResult
      * @return true if the attempt matches the result of the multiplication
      */
-    boolean checkTry(final MultiplicationResultTry multiplicationResult);
+    Boolean checkTry(final MultiplicationResultTry multiplicationResult);
 
 }

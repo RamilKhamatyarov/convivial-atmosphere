@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.rkhamatyarov.convivialatmosphere.contoller.rs.MultiplicationSuccessRs;
 import ru.rkhamatyarov.convivialatmosphere.domain.Multiplication;
 import ru.rkhamatyarov.convivialatmosphere.domain.MultiplicationResultTry;
 import ru.rkhamatyarov.convivialatmosphere.domain.User;
@@ -35,7 +34,6 @@ public class MultiplicationCheckResultControllerTest {
     private MockMvc mockMvc;
 
     private JacksonTester<MultiplicationResultTry> jsonMultiplicationResultTry;
-    private JacksonTester<MultiplicationSuccessRs> jsonSuccessResultResponse;
 
     @Before
     public void setUp() throws Exception {
@@ -52,14 +50,14 @@ public class MultiplicationCheckResultControllerTest {
         genericParametrizedTest(false);
     }
 
-    void genericParametrizedTest(Boolean isMultiplySuccess) throws Exception {
+    void genericParametrizedTest(final Boolean isMultiplySuccess) throws Exception {
         // given
         given(service.checkTry(any(MultiplicationResultTry.class))).willReturn(isMultiplySuccess);
 
         User user = new User();
         Multiplication multiplication = new Multiplication(13, 42);
 
-        MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 13*42);
+        MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 13*42, isMultiplySuccess);
 
         // when
         MockHttpServletResponse servletResponse = mockMvc.perform(
@@ -71,8 +69,13 @@ public class MultiplicationCheckResultControllerTest {
         // then
         assertThat(servletResponse.getStatus()).isEqualTo(OK.value());
         assertThat(servletResponse.getContentAsString()).isEqualTo(
-                jsonSuccessResultResponse.write(
-                        new MultiplicationSuccessRs(isMultiplySuccess)
+                jsonMultiplicationResultTry.write(
+                        new MultiplicationResultTry(
+                                multiplicationResultTry.getUser(),
+                                multiplicationResultTry.getMultiplication(),
+                                multiplicationResultTry.getMultiplicationResult(),
+                                isMultiplySuccess
+                        )
                 ).getJson()
         );
     }

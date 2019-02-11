@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.rkhamatyarov.convivialatmosphere.domain.Multiplication;
 import ru.rkhamatyarov.convivialatmosphere.domain.MultiplicationResultTry;
 
+import static org.springframework.util.Assert.isTrue;
+
 @Service
 public class MultiplicationServiceImpl implements MultiplicationService {
 
@@ -24,9 +26,20 @@ public class MultiplicationServiceImpl implements MultiplicationService {
     }
 
     @Override
-    public boolean checkTry(MultiplicationResultTry multiplicationResult) {
-        return multiplicationResult.getMultiplication().getLeftMultiplier() *
+    public Boolean checkTry(final MultiplicationResultTry multiplicationResult) {
+        Boolean isResultRight = multiplicationResult.getMultiplication().getLeftMultiplier() *
                 multiplicationResult.getMultiplication().getRightMultiplier() ==
                 multiplicationResult.getMultiplicationResult();
+
+        isTrue(!multiplicationResult.isRightResult(), "You cannot send success result.");
+
+        MultiplicationResultTry rightResult = new MultiplicationResultTry(
+                multiplicationResult.getUser(),
+                multiplicationResult.getMultiplication(),
+                multiplicationResult.getMultiplicationResult(),
+                isResultRight
+                );
+
+        return isResultRight;
     }
 }
