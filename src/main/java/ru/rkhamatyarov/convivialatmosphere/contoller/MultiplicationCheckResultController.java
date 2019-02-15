@@ -1,25 +1,22 @@
 package ru.rkhamatyarov.convivialatmosphere.contoller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.rkhamatyarov.convivialatmosphere.contoller.rs.MultiplicationSuccessRs;
+import org.springframework.web.bind.annotation.*;
 import ru.rkhamatyarov.convivialatmosphere.domain.MultiplicationResultTry;
 import ru.rkhamatyarov.convivialatmosphere.service.MultiplicationService;
 
+import java.util.List;
+
+@Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/results")
 final class MultiplicationCheckResultController {
 
     private final MultiplicationService multiplicationService;
-
-    @Autowired
-    MultiplicationCheckResultController(final MultiplicationService multiplicationService) {
-        this.multiplicationService = multiplicationService;
-    }
 
     @PostMapping
     ResponseEntity<MultiplicationResultTry> postResult(@RequestBody MultiplicationResultTry resultTry) {
@@ -36,6 +33,12 @@ final class MultiplicationCheckResultController {
         return ResponseEntity.ok(
                 copyResultTry
         );
+    }
+
+    @GetMapping
+    ResponseEntity<List<MultiplicationResultTry>> getMultiplicationTries(@RequestParam("login") String login) {
+        log.debug(">> Handler layer: multiplication try list {}", multiplicationService.getUserMultiplicationCountOfTries(login));
+        return ResponseEntity.ok(multiplicationService.getUserMultiplicationCountOfTries(login));
     }
 
 }

@@ -1,6 +1,6 @@
 package ru.rkhamatyarov.convivialatmosphere.service;
 
-public interface RandomBeadGeneratorService {
+public interface RandomIntegerGeneratorService {
 
     /**
      * @return return bead with randomly generated radius

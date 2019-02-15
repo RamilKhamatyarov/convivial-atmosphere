@@ -1,14 +1,42 @@
 function updateMultiplication() {
     $.ajax({
+
         url: "http://localhost:8080/multiplications/random"
+
     }).then(function(data) {
+
         // Cleans the form
         $("#attempt-form").find( "input[name='multiplicationResult']" ).val("");
         $("#attempt-form").find( "input[name='userLogin']" ).val("");
+
         // Gets a random challenge from API and loads the data in the HTML
         $('.leftMultiplier').empty().append(data.leftMultiplier);
         $('.rightMultiplier').empty().append(data.rightMultiplier);
+
     });
+}
+
+
+function updateCountOfTries(userLogin) {
+    $.ajax({
+
+        url: "http://localhost:8080/results?login=" + userLogin,
+
+    }).then(function(data){
+
+        $('#tries-body').empty();
+
+        data.forEach(function(row)) {
+
+            $('#tries-body').append('<tr><td>' + row.id +'</td>' +
+                    '<td>' + row.multiplication.leftMultiplier + 'x' + row.multiplication.rightMultiplier + '</td>' +
+                    '<td>' + row.multiplicationResult + '</td>' +
+                    '<td>' + (row.attempt == true? 'SUCCESS': 'FAIL') + '</td></tr>');
+
+            )
+        }
+
+    })
 }
 
 $(document).ready(function() {
@@ -49,5 +77,7 @@ $(document).ready(function() {
         });
 
         updateMultiplication();
+        updateCountOfTries(userLogin);
     });
 });
+

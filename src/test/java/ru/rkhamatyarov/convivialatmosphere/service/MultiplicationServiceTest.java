@@ -18,7 +18,7 @@ import static org.mockito.BDDMockito.given;
 public class MultiplicationServiceTest {
 
     @MockBean
-    private RandomBeadGeneratorService randomBeadGeneratiorService;
+    private RandomIntegerGeneratorService randomBeadGeneratiorService;
 
     @Autowired
     private MultiplicationService beadMultiplicationService;

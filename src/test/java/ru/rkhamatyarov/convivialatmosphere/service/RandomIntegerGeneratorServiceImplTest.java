@@ -9,14 +9,14 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RandomBeadGeneratorServiceImplTest {
+public class RandomIntegerGeneratorServiceImplTest {
 
-    private RandomBeadGeneratorServiceImpl generatorServiceImpl;
+    private RandomIntegerGeneratorServiceImpl generatorServiceImpl;
 
 
     @Before
     public void setUp(){
-        generatorServiceImpl = new RandomBeadGeneratorServiceImpl();
+        generatorServiceImpl = new RandomIntegerGeneratorServiceImpl();
     }
 
     @Test

@@ -14,10 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RandomBeadGeneratorServiceTest {
+public class RandomIntegerGeneratorServiceTest {
 
     @Autowired
-    private RandomBeadGeneratorService generatorService;
+    private RandomIntegerGeneratorService generatorService;
 
     @Test
     public void generateRandomBeadFactorTest() throws Exception{

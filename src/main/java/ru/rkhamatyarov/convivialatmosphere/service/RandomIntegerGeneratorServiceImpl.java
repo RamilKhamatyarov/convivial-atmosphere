@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class RandomBeadGeneratorServiceImpl implements RandomBeadGeneratorService{
+public class RandomIntegerGeneratorServiceImpl implements RandomIntegerGeneratorService {
     private final static Integer MIN_BEAD = 11;
     private final static Integer MAX_BEAD = 99;
 

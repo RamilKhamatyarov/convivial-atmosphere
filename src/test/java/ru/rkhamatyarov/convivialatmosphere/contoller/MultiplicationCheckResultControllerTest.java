@@ -1,6 +1,7 @@
 package ru.rkhamatyarov.convivialatmosphere.contoller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +17,20 @@ import ru.rkhamatyarov.convivialatmosphere.domain.MultiplicationResultTry;
 import ru.rkhamatyarov.convivialatmosphere.domain.User;
 import ru.rkhamatyarov.convivialatmosphere.service.MultiplicationService;
 
+import java.util.List;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(MultiplicationCheckResultController.class)
 public class MultiplicationCheckResultControllerTest {
-
+    private static final String TEST_USER_LOGIN = "testUser";
     @MockBean
     private MultiplicationService service;
 
@@ -34,6 +38,7 @@ public class MultiplicationCheckResultControllerTest {
     private MockMvc mockMvc;
 
     private JacksonTester<MultiplicationResultTry> jsonMultiplicationResultTry;
+    private JacksonTester<List<MultiplicationResultTry>> jsonMultiplicationResultTryList;
 
     @Before
     public void setUp() throws Exception {
@@ -50,8 +55,8 @@ public class MultiplicationCheckResultControllerTest {
         genericParametrizedTest(false);
     }
 
-    void genericParametrizedTest(final Boolean isMultiplySuccess) throws Exception {
-        // given
+    public void genericParametrizedTest(final Boolean isMultiplySuccess) throws Exception {
+        // let
         given(service.checkTry(any(MultiplicationResultTry.class))).willReturn(isMultiplySuccess);
 
         User user = new User();
@@ -59,14 +64,14 @@ public class MultiplicationCheckResultControllerTest {
 
         MultiplicationResultTry multiplicationResultTry = new MultiplicationResultTry(user, multiplication, 13*42, isMultiplySuccess);
 
-        // when
+        // solve
         MockHttpServletResponse servletResponse = mockMvc.perform(
                 post("/results").
                         contentType(APPLICATION_JSON).
-                        content(jsonMultiplicationResultTry.write(multiplicationResultTry).getJson())).
-                andReturn().getResponse();
+                        content(jsonMultiplicationResultTry.write(multiplicationResultTry).getJson())
+        ).andReturn().getResponse();
 
-        // then
+        // assert
         assertThat(servletResponse.getStatus()).isEqualTo(OK.value());
         assertThat(servletResponse.getContentAsString()).isEqualTo(
                 jsonMultiplicationResultTry.write(
@@ -80,4 +85,33 @@ public class MultiplicationCheckResultControllerTest {
         );
     }
 
+    @Test
+    public void getMultiplicationTriesTest() throws Exception {
+        // let
+        User user = new User(TEST_USER_LOGIN);
+        Multiplication multiplication = new Multiplication(13, 42);
+
+        MultiplicationResultTry multiplicationResultTry1 = new MultiplicationResultTry(user, multiplication, 13 * 42, true);
+        MultiplicationResultTry multiplicationResultTry2 = new MultiplicationResultTry(user, multiplication, 14 * 42, false);
+        MultiplicationResultTry multiplicationResultTry3 = new MultiplicationResultTry(user, multiplication, 15 * 42, false);
+
+        List<MultiplicationResultTry> multTryList = Lists.newArrayList(multiplicationResultTry1, multiplicationResultTry2, multiplicationResultTry3);
+
+        given(service.getUserMultiplicationCountOfTries(TEST_USER_LOGIN)).willReturn(multTryList);
+
+        // solve
+        MockHttpServletResponse servletRs = mockMvc.perform(
+                get("/results").
+                        param("login", TEST_USER_LOGIN)
+        ).andReturn().getResponse();
+
+        // assert
+        assertThat(servletRs.getStatus()).isEqualTo(OK.value());
+        assertThat(servletRs.getContentAsString()).isEqualTo(
+                jsonMultiplicationResultTryList.write(
+                        multTryList
+                ).getJson()
+        );
+
+    }
 }
