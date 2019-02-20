@@ -40,6 +40,6 @@ public class MultiplicationResultTry {
         user = null;
         multiplication = null;
         multiplicationResult = -1;
-        isRightResult = Boolean.FALSE;
+        isRightResult = false;
     }
 }
