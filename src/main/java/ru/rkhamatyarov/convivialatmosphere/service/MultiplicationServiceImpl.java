@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.rkhamatyarov.convivialatmosphere.domain.Multiplication;
 import ru.rkhamatyarov.convivialatmosphere.domain.MultiplicationResultTry;
 import ru.rkhamatyarov.convivialatmosphere.domain.User;
+import ru.rkhamatyarov.convivialatmosphere.event.EventDispatcher;
+import ru.rkhamatyarov.convivialatmosphere.event.TaskSolvedEvent;
 import ru.rkhamatyarov.convivialatmosphere.repository.MultiplicationTryRepository;
 import ru.rkhamatyarov.convivialatmosphere.repository.UserRepository;
 
@@ -22,13 +24,10 @@ import static org.springframework.util.Assert.isTrue;
 @Service
 public class MultiplicationServiceImpl implements MultiplicationService {
 
-    @NonNull
     private RandomIntegerGeneratorService randomIntegerGeneratorService;
-
-    @NonNull
     private UserRepository userRepository;
-    @NonNull
     private MultiplicationTryRepository multiplicationTryRepository;
+    private EventDispatcher eventDispatcher;
 
     @Override
     public Multiplication createRandomMultiplication() {
@@ -58,6 +57,14 @@ public class MultiplicationServiceImpl implements MultiplicationService {
                 );
 
         multiplicationTryRepository.save(rightResult);
+
+        // Publish event to the queue (topic way)
+        eventDispatcher.send(
+                new TaskSolvedEvent(
+                        rightResult.getId(),
+                        rightResult.getUser().getId(),
+                        rightResult.isRightResult()
+                ));
 
         return isResultRight;
     }
