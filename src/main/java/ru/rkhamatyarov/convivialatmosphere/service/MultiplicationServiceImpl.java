@@ -1,9 +1,7 @@
 package ru.rkhamatyarov.convivialatmosphere.service;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rkhamatyarov.convivialatmosphere.domain.Multiplication;
@@ -20,19 +18,30 @@ import java.util.Optional;
 import static org.springframework.util.Assert.isTrue;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
 public class MultiplicationServiceImpl implements MultiplicationService {
 
-    private RandomIntegerGeneratorService randomIntegerGeneratorService;
+    private RandomIntegerGeneratorService generatorService;
     private UserRepository userRepository;
     private MultiplicationTryRepository multiplicationTryRepository;
     private EventDispatcher eventDispatcher;
 
+    MultiplicationServiceImpl(
+            RandomIntegerGeneratorService generatorService,
+            UserRepository userRepository,
+            MultiplicationTryRepository multiplicationTryRepository,
+            EventDispatcher eventDispatcher
+    ) {
+        this.generatorService = generatorService;
+        this.userRepository = userRepository;
+        this.multiplicationTryRepository = multiplicationTryRepository;
+        this.eventDispatcher = eventDispatcher;
+    }
+
     @Override
     public Multiplication createRandomMultiplication() {
-        Integer leftMultiplier = randomIntegerGeneratorService.generateRandomBeadFactor();
-        Integer rightMultiplier = randomIntegerGeneratorService.generateRandomBeadFactor();
+        Integer leftMultiplier = generatorService.generateRandomBeadFactor();
+        Integer rightMultiplier = generatorService.generateRandomBeadFactor();
 
         return new Multiplication(leftMultiplier, rightMultiplier);
     }
@@ -59,7 +68,7 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         multiplicationTryRepository.save(rightResult);
 
         // Publish event to the queue (topic way)
-        eventDispatcher.send(
+            eventDispatcher.send(
                 new TaskSolvedEvent(
                         rightResult.getId(),
                         rightResult.getUser().getId(),
