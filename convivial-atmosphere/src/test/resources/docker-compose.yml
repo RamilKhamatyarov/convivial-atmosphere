@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+
+  rabbitmq:
+    image: rabbitmq
+    command: rabbitmq-server
+    network_mode: host
