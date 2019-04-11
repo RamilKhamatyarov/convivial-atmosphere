@@ -21,7 +21,7 @@ import java.util.List;
 public class ProgressReport {
     private final Long memberId;
     private final Long experimentAmount;
-    private final List<MemberAchievementStatus> memberAchievementStatusList;
+    private final List<AchievementCard> memberAchievementStatusList;
 
     public ProgressReport() {
         this.memberId = 0L;
@@ -42,7 +42,7 @@ public class ProgressReport {
     /**
      * @return achievement status
      */
-    public List<MemberAchievementStatus> getAchievementCard() {
+    public List<AchievementCard> getAchievementCard() {
         return Collections.unmodifiableList(memberAchievementStatusList);
     }
 
