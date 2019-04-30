@@ -1,9 +1,6 @@
 package ru.rkhamatyarov.convivialcompetition.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +11,12 @@ import java.util.List;
  * objects and {@link MemberAchievementStatus}
  */
 
-@RequiredArgsConstructor
+
 @Getter
 @ToString
 @EqualsAndHashCode
+@RequiredArgsConstructor
+
 public class ProgressReport {
     private final Long memberId;
     private final Long experimentAmount;

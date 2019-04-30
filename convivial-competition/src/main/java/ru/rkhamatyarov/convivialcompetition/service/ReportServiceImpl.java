@@ -1,6 +1,6 @@
 package ru.rkhamatyarov.convivialcompetition.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static ru.rkhamatyarov.convivialcompetition.service.GameScoreTrescholds.*;
+import static ru.rkhamatyarov.convivialcompetition.service.constants.GameScoreTrescholds.*;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
+    @Autowired
     private AccountExperimentAmountCardRepository scoreCardRepository;
+
+    @Autowired
     private MemberAchievementStatusRepository badgeCardRepository;
 
     @Override
@@ -35,11 +38,11 @@ public class ReportServiceImpl implements ReportService {
 
             log.info("Member id is {} scored {} points for achievement id {}.", memberId, accountExperimentAmountCard.getAccount(), attemptId);
 
-            List<MemberAchievementStatus> memberAchievementStatuseList = processForAchievementStatusList(memberId, attemptId);
+            List<MemberAchievementStatus> memberAchievementStatusList = processForAchievementStatusList(memberId, attemptId);
 
             return new ProgressReport(memberId,
                     accountExperimentAmountCard.getAccount(),
-                    memberAchievementStatuseList.stream()
+                    memberAchievementStatusList.stream()
                             .map(MemberAchievementStatus::getAchievementCard)
                             .collect(Collectors.toList()));
         }
@@ -65,17 +68,17 @@ public class ReportServiceImpl implements ReportService {
         List<MemberAchievementStatus> memberAchievementStatusList = badgeCardRepository.findByMemberIdByAchievmentCardTimestampDesc(memberId);
 
 
-        checkAndGiveMemberStatusOnScore(memberAchievementStatusList, AchievementCard.BRONZE_CARD, totalScore, BRONZE_TRESHOLD, memberId)
+        checkAndGiveMemberStatusOnScore(memberAchievementStatusRanked, AchievementCard.BRONZE_CARD, totalScore, BRONZE_TRESHOLD, memberId)
                 .ifPresent(memberAchievementStatusRanked::add);
 
-        checkAndGiveMemberStatusOnScore(memberAchievementStatusList, AchievementCard.SILVER_CARD, totalScore, SILVER_TRESHOLD, memberId)
+        checkAndGiveMemberStatusOnScore(memberAchievementStatusRanked, AchievementCard.SILVER_CARD, totalScore, SILVER_TRESHOLD, memberId)
                 .ifPresent(memberAchievementStatusRanked::add);
 
         checkAndGiveMemberStatusOnScore(memberAchievementStatusList, AchievementCard.GOLD_CARD, totalScore, GOLD_TRESHOLD, memberId)
                 .ifPresent(memberAchievementStatusRanked::add);
 
-        if (memberAchievementStatusList.size() == 1 &&
-            !containsMemberAchievementStatus(memberAchievementStatusList, AchievementCard.PLATINUM_CARD)) {
+        if (memberAchievementStatusRanked.size() == 1 &&
+            !containsMemberAchievementStatus(memberAchievementStatusRanked, AchievementCard.PLATINUM_CARD)) {
             MemberAchievementStatus platinumMember = giveAchievementStatusToMember(AchievementCard.PLATINUM_CARD, memberId);
             memberAchievementStatusRanked.add(platinumMember);
         }
@@ -91,6 +94,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private Boolean containsMemberAchievementStatus(List<MemberAchievementStatus> memberAchievementStatusList, AchievementCard achievementCard) {
+        log.debug("memberAchievementStatusList {} contains achievementCard {}: {}",
+                memberAchievementStatusList,
+                achievementCard,
+                memberAchievementStatusList.stream().anyMatch(status -> status.getAchievementCard().equals(achievementCard)));
+
         return memberAchievementStatusList.stream().anyMatch(status -> status.getAchievementCard().equals(achievementCard));
     }
 

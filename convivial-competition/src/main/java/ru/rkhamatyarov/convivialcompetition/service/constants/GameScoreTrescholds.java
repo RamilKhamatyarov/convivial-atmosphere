@@ -1,4 +1,4 @@
-package ru.rkhamatyarov.convivialcompetition.service;
+package ru.rkhamatyarov.convivialcompetition.service.constants;
 
 public final class GameScoreTrescholds {
     public static final Integer BRONZE_TRESHOLD = 100;
