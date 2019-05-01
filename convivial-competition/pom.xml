@@ -56,7 +56,13 @@
 			<artifactId>spring-boot</artifactId>
 			<version>1.5.19.RELEASE</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>ru.rkhamatyarov</groupId>
+            <artifactId>convivial-atmosphere</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

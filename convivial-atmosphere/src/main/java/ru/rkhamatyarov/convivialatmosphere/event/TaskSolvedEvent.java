@@ -13,7 +13,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class TaskSolvedEvent implements Serializable {
     private final Long solveNumberOfAttempts;
-    private final Long userId;
+    private final Long memberId;
     private final Boolean isCorrect;
 }
 
