@@ -8,5 +8,6 @@ public enum AchievementCard {
     GOLD_CARD,
     SILVER_CARD,
     BRONZE_CARD,
-    ALIMINIUM_CARD
+    ALIMINIUM_CARD,
+    RANDOM_CARD
 }

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.rkhamatyarov.convivialcompetition.client.MultiplicationResultTryClientImpl;
+import ru.rkhamatyarov.convivialcompetition.client.dto.MultiplicationResultTry;
 import ru.rkhamatyarov.convivialcompetition.domain.AccountExperimentAmountCard;
 import ru.rkhamatyarov.convivialcompetition.domain.AchievementCard;
 import ru.rkhamatyarov.convivialcompetition.domain.MemberAchievementStatus;
@@ -28,6 +30,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private MemberAchievementStatusRepository badgeCardRepository;
+
+    @Autowired
+    private MultiplicationResultTryClientImpl multiplicationResultTryClient;
 
     @Override
     public ProgressReport newAttemptForMember(Long memberId, Long attemptId, boolean correct) {
@@ -77,11 +82,23 @@ public class ReportServiceImpl implements ReportService {
         checkAndGiveMemberStatusOnScore(memberAchievementStatusList, AchievementCard.GOLD_CARD, totalScore, GOLD_TRESHOLD, memberId)
                 .ifPresent(memberAchievementStatusRanked::add);
 
+        // First won achievement status
         if (memberAchievementStatusRanked.size() == 1 &&
             !containsMemberAchievementStatus(memberAchievementStatusRanked, AchievementCard.PLATINUM_CARD)) {
             MemberAchievementStatus platinumMember = giveAchievementStatusToMember(AchievementCard.PLATINUM_CARD, memberId);
             memberAchievementStatusRanked.add(platinumMember);
         }
+
+        // Random won achievement status
+        MultiplicationResultTry  resultAttempt = multiplicationResultTryClient.retrieveMultiplicationResultTryId(attemptId);
+        if (!containsMemberAchievementStatus(memberAchievementStatusRanked, AchievementCard.RANDOM_CARD)
+                && (RANDOM_NUMBER == resultAttempt.getLeftMultiplier()
+                || RANDOM_NUMBER == resultAttempt.getRightMultiplier())) {
+
+            MemberAchievementStatus memberAchievementStatus = giveAchievementStatusToMember(AchievementCard.RANDOM_CARD, memberId);
+            memberAchievementStatusRanked.add(memberAchievementStatus);
+        }
+
         return memberAchievementStatusRanked;
     }
 
