@@ -5,7 +5,7 @@ import ru.rkhamatyarov.convivialatmosphere.domain.MultiplicationResultTry;
 
 import java.util.List;
 
-public interface MultiplicationTryRepository extends CrudRepository<MultiplicationResultTry, Long> {
+public interface    MultiplicationTryRepository extends CrudRepository<MultiplicationResultTry, Long> {
 
     /**
      *

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.util.Assert.isTrue;
+import static ru.rkhamatyarov.convivialatmosphere.util.PrettyJsonBuilder.prettyJson;
 
 @Slf4j
 @Service
@@ -43,7 +44,10 @@ public class MultiplicationServiceImpl implements MultiplicationService {
         Integer leftMultiplier = generatorService.generateRandomBeadFactor();
         Integer rightMultiplier = generatorService.generateRandomBeadFactor();
 
-        return new Multiplication(leftMultiplier, rightMultiplier);
+        Multiplication randomMultiplication = new Multiplication(leftMultiplier, rightMultiplier);
+        log.debug("Made random multiplication: {}", prettyJson(randomMultiplication));
+
+        return randomMultiplication;
     }
 
     @Transactional

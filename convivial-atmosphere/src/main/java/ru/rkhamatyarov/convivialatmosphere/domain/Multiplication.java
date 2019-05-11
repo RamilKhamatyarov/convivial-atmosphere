@@ -20,7 +20,7 @@ public final class Multiplication {
 
     @Id
     @GeneratedValue
-    @Column (name="ID_OF_MULTIPLICATION")
+    @Column (name="ID_OF_MULTIPLICATION", nullable = false, unique = true)
     private Long id;
 
     private final Integer leftMultiplier;

@@ -44,7 +44,7 @@ function updateMultiplication() {
     $.ajax({
 
         url: "http://localhost:8080/multiplications/random"
-
+        // TODO Turn off CORS by some browser extension - tmp decision
     }).then(function(data) {
 
         // Cleans the form
@@ -69,7 +69,7 @@ function updateCountOfTries(userLogin) {
         $('#tries-body').empty();
 
         data.forEach(function(row) {
-            console.log('test: ' + row.rightResult	 )
+
             $('#tries-body').append('<tr><td>' + row.id +'</td>' +
                     '<td>' + row.multiplication.leftMultiplier + ' x ' + row.multiplication.rightMultiplier + '</td>' +
                     '<td>' + row.multiplicationResult + '</td>' +
